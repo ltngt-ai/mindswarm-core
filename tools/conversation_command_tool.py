@@ -1,27 +1,22 @@
 """
-Module: ai_whisperer/tools/batch_command_tool.py
-Purpose: AI tool implementation for batch command
+Module: ai_whisperer/tools/conversation_command_tool.py
+Purpose: AI tool implementation for conversation replay commands
 
-BatchCommandTool - Interprets and executes batch script commands.
-Part of Debbie's batch processing capabilities.
+ConversationCommandTool - Interprets and executes conversation replay commands.
+Part of conversation replay capabilities.
 
 Key Components:
 - CommandInterpreter: Interprets natural language commands into structured actions
-- BatchCommandTool: 
+- ConversationCommandTool: Executes conversation commands
 
 Usage:
-    tool = CommandInterpreter()
+    tool = ConversationCommandTool()
     result = await tool.execute(**parameters)
 
 Dependencies:
 - logging
 - base_tool
 - script_parser_tool
-
-Related:
-- See docs/batch-mode/PHASE2_TASKS.md
-- See docs/batch-mode/PHASE2_CHECKLIST.md
-- See docs/batch-mode/IMPLEMENTATION_PLAN.md
 
 """
 
@@ -201,19 +196,19 @@ class CommandInterpreter:
         
         return None
 
-class BatchCommandTool(AITool):
+class ConversationCommandTool(AITool):
     """
-    Tool for interpreting and executing batch script commands.
+    Tool for interpreting and executing conversation replay commands.
     Supports both structured (JSON/YAML) and natural language (text) commands.
     """
     
-    def __init__(self):
-        """Initialize the batch command tool"""
+    def __init__(self, tool_registry=None):
+        """Initialize the conversation command tool"""
         super().__init__()
-        self._name = "batch_command"
-        self._description = "Execute batch scripts with multiple commands in sequence"
+        self._name = "conversation_command"
+        self._description = "Execute conversation scripts with multiple messages in sequence"
         self.interpreter = CommandInterpreter()
-        self.tool_registry = None
+        self.tool_registry = tool_registry
     
     @property
     def name(self) -> str:

@@ -1,6 +1,6 @@
 """
-Server lifecycle management for batch mode.
-Handles starting, stopping, and monitoring the interactive server for Debbie's batch client.
+Server lifecycle management for conversation replay mode.
+Handles starting, stopping, and monitoring the interactive server for conversation replay.
 """
 
 import random
@@ -14,7 +14,7 @@ class ServerManager:
 
     def start_server(self, max_retries=5):
         """Start the interactive server on a random or specified port. Retries if port is in use."""
-        print("🚀 Starting batch mode server...")
+        print("🚀 Starting conversation replay server...")
         attempts = 0
         while attempts < max_retries:
             try:
@@ -25,8 +25,8 @@ class ServerManager:
                 # Wait for server to initialize properly
                 time.sleep(2.0)  # Interactive server needs time to initialize
                 if self.is_running():
-                    print(f"   ✅ Batch server started successfully on port {self.port}")
-                    print(f"   📁 Server logs: logs/aiwhisperer_server_batch_{self.port}.log")
+                    print(f"   ✅ Conversation replay server started successfully on port {self.port}")
+                    print(f"   📁 Server logs: logs/aiwhisperer_server_replay_{self.port}.log")
                     print(f"   🌐 Server URL: http://127.0.0.1:{self.port}")
                     return
                 else:
@@ -56,17 +56,20 @@ class ServerManager:
         
         # Set environment variable for port-specific logging
         env = os.environ.copy()
-        env['AIWHISPERER_BATCH_PORT'] = str(self.port)
+        env['AIWHISPERER_REPLAY_PORT'] = str(self.port)
+        # Set config path for interactive server
+        env['AIWHISPERER_CONFIG'] = 'config/main.yaml'
         
         server_cmd = [
             sys.executable,
             "-m", "interactive_server.main",
             f"--host=127.0.0.1",
-            f"--port={self.port}"
+            f"--port={self.port}",
+            f"--config=config/main.yaml"
         ]
         
         print(f"   🔧 Command: {' '.join(server_cmd)}")
-        print(f"   🔧 Environment AIWHISPERER_BATCH_PORT: {env.get('AIWHISPERER_BATCH_PORT')}")
+        print(f"   🔧 Environment AIWHISPERER_REPLAY_PORT: {env.get('AIWHISPERER_REPLAY_PORT')}")
         
         try:
             self.process = subprocess.Popen(server_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
@@ -84,11 +87,11 @@ class ServerManager:
     def stop_server(self):
         """Stop the interactive server if running."""
         if self.process:
-            print(f"🛑 Stopping batch server on port {self.port}")
+            print(f"🛑 Stopping conversation replay server on port {self.port}")
             try:
                 self.process.terminate()
                 self.process.wait(timeout=2)
-                print(f"   ✅ Batch server stopped successfully")
+                print(f"   ✅ Conversation replay server stopped successfully")
             except Exception as e:
                 print(f"   ⚠️ Error stopping server: {e}")
             self.process = None

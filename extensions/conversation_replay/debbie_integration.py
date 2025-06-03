@@ -8,9 +8,9 @@ from typing import Any, Dict, Optional
 import logging
 from datetime import datetime
 
-from ai_whisperer.extensions.batch.monitoring import DebbieMonitor, AnomalyAlert
-from ai_whisperer.extensions.batch.intervention import InterventionOrchestrator, InterventionConfig
-from ai_whisperer.extensions.batch.websocket_interceptor import WebSocketInterceptor
+from ai_whisperer.extensions.conversation_replay.monitoring import DebbieMonitor, AnomalyAlert
+from ai_whisperer.extensions.conversation_replay.intervention import InterventionOrchestrator, InterventionConfig
+from ai_whisperer.extensions.conversation_replay.websocket_interceptor import WebSocketInterceptor
 from ai_whisperer.extensions.monitoring.debbie_logger import DebbieLogger
 from ai_whisperer.extensions.monitoring.log_aggregator import LogAggregator
 

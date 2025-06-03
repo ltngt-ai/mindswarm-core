@@ -1,5 +1,5 @@
 """
-WebSocket client for Debbie the Debugger.
+WebSocket client for conversation replay mode.
 Handles WebSocket connection and communication with the interactive server.
 """
 
@@ -124,7 +124,9 @@ class WebSocketClient:
             logger.debug(f"Sent request: {method} (id={request_id})")
             
             # Wait for response
+            logger.info(f"Waiting for response to request {request_id} (method: {method})")
             response = await asyncio.wait_for(response_future, timeout=self.timeout)
+            logger.info(f"Received response for request {request_id}: {response}")
             
             # Check for error
             if "error" in response:
@@ -156,10 +158,15 @@ class WebSocketClient:
                     if "id" in data:
                         # Response to a request
                         request_id = data["id"]
+                        logger.info(f"Received response with id {request_id}: {data}")
                         if request_id in self._response_handlers:
+                            logger.info(f"Setting result for request {request_id}")
                             self._response_handlers[request_id].set_result(data)
+                        else:
+                            logger.warning(f"No handler for response id {request_id}")
                     else:
                         # Notification (no id)
+                        logger.info(f"Received notification: {data}")
                         if self._notification_handler:
                             asyncio.create_task(self._notification_handler(data))
                         else:
