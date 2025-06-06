@@ -1,0 +1,80 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mindswarm-core"
+dynamic = ["version"]
+description = "Orchestrating Collective AI Intelligence - Core Backend"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "MindSwarm Team", email = "team@ltngt.ai"},
+]
+keywords = ["ai", "agents", "swarm", "orchestration", "async"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "websockets",
+    "fastmcp>=2.6.0",
+    "PyYAML>=5.4",
+    "requests>=2.30,<3.0",
+    "python-dotenv",
+    "jsonschema>=4.0,<5.0",
+    "pydantic",
+    "deepdiff",
+    "pytest-asyncio",
+    "debugpy",
+    "fastapi",
+    "uvicorn",
+    "httpx",
+    "aiohttp>=3.12.0",
+    "mcp>=1.9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "pytest-timeout>=2.1",
+    "pytest-mock",
+    "requests-mock>=1.11,<2.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+]
+
+[project.urls]
+Homepage = "https://ltngt.ai"
+Documentation = "https://docs.ltngt.ai"
+Repository = "https://github.com/ltngt-ai/mindswarm-core"
+Issues = "https://github.com/ltngt-ai/mindswarm-core/issues"
+
+[project.scripts]
+mindswarm = "mindswarm.cli.main:main"
+mindswarm-server = "mindswarm.api.main:main"
+
+[tool.hatch.version]
+path = "src/mindswarm/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/requirements",
+    "/tests",
+    "/prompts",
+    "/config",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
