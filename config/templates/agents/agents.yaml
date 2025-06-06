@@ -1,0 +1,109 @@
+agents:
+  p:
+    name: "Patricia the Planner"
+    role: "rfc_producer"
+    description: "Specializes in refining ideas into well-structured RFC documents"
+    tool_tags: ["rfc", "codebase_analysis", "web_research"]
+    prompt_file: "agent_patricia.prompt.md"
+    context_sources: ["rfc_templates", "existing_rfcs", "codebase_structure"]
+    color: "#9C27B0"
+    icon: "📝"
+    tool_sets: ["rfc_specialist", "mailbox_tools"]
+    continuation_config:
+      require_explicit_signal: true
+      max_iterations: 10
+      timeout: 600
+  
+  a:
+    name: "Alice the AI Assistant"
+    role: "assistant" 
+    description: "General-purpose AI assistant for coding and problem-solving"
+    tool_tags: ["filesystem", "command", "analysis", "agent_switching"]
+    prompt_file: "alice_assistant.prompt.md"
+    context_sources: ["conversation_history", "workspace_structure"]
+    color: "#F97316"
+    icon: "🤖"
+    tool_sets: ["general_assistant", "agent_switching", "mailbox_tools"]
+    continuation_config:
+      require_explicit_signal: true  # Use structured continuation protocol
+      max_iterations: 8
+      timeout: 600
+    
+  t:
+    name: "Tessa the Tester"
+    role: "tester"
+    description: "Generates comprehensive test suites and test plans"
+    tool_tags: ["filesystem", "testing", "analysis"]
+    prompt_file: "agent_tester.prompt.md"
+    context_sources: ["existing_tests", "code_coverage", "test_patterns"]
+    color: "#4CAF50"
+    icon: "🧪"
+    continuation_config:
+      require_explicit_signal: true
+      max_iterations: 5
+      timeout: 300
+    
+  d:
+    name: "Debbie the Debugger"
+    role: "debugging_assistant" 
+    description: "Debugging specialist for system issues and monitoring"
+    tool_tags: ["filesystem", "command", "analysis", "agent_switching"]
+    prompt_file: "debbie_debugger.prompt.md"
+    context_sources: ["conversation_history", "workspace_structure"]
+    color: "#DC2626"
+    icon: "🐛"
+    tool_sets: ["general_assistant", "agent_switching", "mailbox_tools"]
+    # Use latest GPT-4 for Debbie
+    ai_config:
+      model: "openai/gpt-4o"  # Latest GPT-4 model
+      provider: "openrouter"
+      generation_params:
+        temperature: 0.5
+        max_tokens: 4096
+    continuation_config:
+      require_explicit_signal: false  # Allow automatic continuation after tool calls
+      max_iterations: 8
+      timeout: 600
+  
+  e:
+    name: "Eamonn the Executioner"
+    role: "task_decomposer"
+    description: "Breaks down plans into executable tasks for external AI coding assistants"
+    tool_tags: ["task_decomposition", "external_agents", "mailbox", "analysis"]
+    prompt_file: "agent_eamonn.prompt.md"
+    context_sources: ["agent_p_plans", "task_dependencies", "technology_stack", "external_agent_capabilities"]
+    color: "#7C3AED"
+    icon: "⚔️"
+    tool_sets: ["task_decomposition", "mailbox_tools", "external_agent_tools"]
+    # Agent E uses a different model for complex task decomposition
+    ai_config:
+      model: "anthropic/claude-3-opus-20240229"  # Powerful model for complex planning
+      provider: "openrouter"
+      generation_params:
+        temperature: 0.7
+        max_tokens: 8000  # Larger context for handling complex plans
+    capabilities:
+      - plan_decomposition
+      - dependency_resolution
+      - technology_detection
+      - external_agent_formatting
+      - task_complexity_estimation
+      - clarification_requests
+      - progress_tracking
+    continuation_config:
+      require_explicit_signal: true  # Use structured continuation protocol
+      max_iterations: 10
+      timeout: 600
+    configuration:
+      decomposition:
+        max_task_depth: 3
+        min_task_size: "simple"
+        dependency_check: true
+      external_agents:
+        supported: ["claude_code", "roocode", "github_copilot"]
+        default: "claude_code"
+        validation_required: true
+      communication:
+        use_mailbox: true
+        clarification_timeout: 300  # 5 minutes
+        priority_default: "normal"

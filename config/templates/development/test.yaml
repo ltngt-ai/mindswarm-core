@@ -1,0 +1,9 @@
+? ''
+: null
+'# Settings specific to test environments': null
+'# Test Configuration': null
+openrouter:
+  model: test-model
+  params:
+    max_tokens: 100
+    temperature: 0.0
